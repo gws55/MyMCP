@@ -2,7 +2,9 @@
 <resources>
 
     <string name="app_name">My Application</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="login">Login</string>
+    <string name="userInfo_title">User Info</string>
 
 </resources>
