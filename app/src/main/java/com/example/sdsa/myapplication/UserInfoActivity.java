@@ -58,7 +58,7 @@ public class UserInfoActivity extends Activity
                     "Role: " + res.getString("role_cd");
             content.setText(info);
         } catch (Exception e) {
-            content.setText("ERROR");
+            content.setText("ERROR!");
         }
     }
 
