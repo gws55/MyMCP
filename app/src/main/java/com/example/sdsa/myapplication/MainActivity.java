@@ -1,17 +1,38 @@
 package com.example.sdsa.myapplication;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends Activity
 {
+    public static final String server_prefix = "http://54.173.104.78:8080";
+    public static final String LOGIN_URL = server_prefix + "/mcp/login_loginBtn";
+
+    private static final String HEADER_PARAMETER_USERNAME = "mcp_user_name";
+    private static final String HEADER_PARAMETER_PASSWORD = "pw";
+
     EditText main_useridEditText;
     EditText main_passwordEditText;
 
@@ -55,10 +76,64 @@ public class MainActivity extends ActionBarActivity
         String userid = main_useridEditText.getText().toString();
         String password = main_passwordEditText.getText().toString();
 
-        Intent userInfoIntent = new Intent(this, UserInfoActivity.class);
-        userInfoIntent.putExtra("userid", userid);
-        userInfoIntent.putExtra("password", password);
-        startActivity(userInfoIntent);
+        String[] param = new String[2];
+        param[0] = userid;
+        param[1] = password;
+
+        // execute Async task
+        new GetUserInfo().execute(param);
+    }
+
+    public void onClick_main_signup_button(View v)
+    {
+        Intent signupIntent = new Intent(getApplicationContext(), SignUpActivity.class);
+        startActivity(signupIntent);
+    }
+
+    public class GetUserInfo extends AsyncTask<String, Void, String>
+    {
+        JSONObject result;
+
+        @Override
+        protected String doInBackground(String... param)
+        {
+            try {
+                HttpResponse response;
+                HttpClient client = new DefaultHttpClient();
+                HttpPost post = new HttpPost(LOGIN_URL);
+
+                List<NameValuePair> params = new ArrayList();
+                params.add(new BasicNameValuePair(HEADER_PARAMETER_USERNAME, param[0]));
+                params.add(new BasicNameValuePair(HEADER_PARAMETER_PASSWORD, param[1]));
+                post.setEntity(new UrlEncodedFormEntity(params));
+
+                response = client.execute(post);
+                String json = EntityUtils.toString(response.getEntity(), "UTF-8");
+
+                JSONObject jsonObject = new JSONObject(json);
+
+                result = jsonObject;
+            } catch (Exception e) {
+                result = null;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String param)
+        {
+            try {
+                if (result == null || result.getString("success") == "false") {
+                    Toast.makeText(getApplicationContext(), result.getString("msg"), Toast.LENGTH_LONG).show();
+                } else {
+                    Intent userInfoIntent = new Intent(getApplicationContext(), UserInfoActivity.class);
+                    userInfoIntent.putExtra("result", result.toString());
+                    startActivity(userInfoIntent);
+                }
+            } catch (JSONException e) {
+                Toast.makeText(getApplicationContext(), "ERROR!", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
 }

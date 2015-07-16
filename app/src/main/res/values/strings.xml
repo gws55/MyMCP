@@ -6,5 +6,6 @@
 
     <string name="login">Login</string>
     <string name="userInfo_title">User Info</string>
+    <string name="signup_title">Sign Up</string>
 
 </resources>

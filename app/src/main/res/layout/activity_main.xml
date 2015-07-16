@@ -20,23 +20,52 @@
         android:layout_below="@+id/main_passwordEditText"
         android:layout_centerHorizontal="true"
         android:id="@+id/main_button"
-        android:onClick="onClick_main_button" />
+        android:onClick="onClick_main_button"
+        android:layout_marginTop="30dp" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:width="250dp"
+        android:width="200dp"
         android:id="@+id/main_useridEditText"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/main_title"
-        android:layout_alignStart="@+id/main_passwordEditText"
-        android:layout_marginTop="94dp" />
+        android:layout_alignStart="@+id/main_button" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:width="250dp"
+        android:width="200dp"
         android:id="@+id/main_passwordEditText"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/main_useridEditText"
+        android:layout_alignLeft="@+id/main_button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:id="@+id/main_signup_button"
+        android:onClick="onClick_main_signup_button"
+        android:layout_below="@+id/main_button"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="ID"
+        android:id="@+id/textView"
+        android:layout_above="@+id/main_passwordEditText"
+        android:layout_alignEnd="@+id/textView2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Password"
+        android:id="@+id/textView2"
+        android:layout_marginRight="10dp"
+        android:layout_above="@+id/main_button"
+        android:layout_toStartOf="@+id/main_passwordEditText" />
 
 </RelativeLayout>
